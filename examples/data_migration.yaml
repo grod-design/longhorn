@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  namespace: default  # namespace where the pvc's exist
+  namespace: cdp  # namespace where the pvc's exist
   name: volume-migration
 spec:
   completions: 1
@@ -16,7 +16,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: volume-migration
-          image: registry.suse.com/bci/golang:1.24
+          image: http://docker-private.infra.cloudera.com/cloudera_thirdparty/cldr-kubectl
           tty: true
           command: [ "/bin/sh" ]
           args: [ "-c", "cp -r -v /mnt/old/. /mnt/new" ]
@@ -28,7 +28,7 @@ spec:
       volumes:
         - name: old-vol
           persistentVolumeClaim:
-            claimName: data-source-pvc # change to data source pvc
+            claimName: pvc-ea369219-77b2-4bc6-8381-fa4a28f147c0 # change to data source pvc
         - name: new-vol
           persistentVolumeClaim:
-            claimName: data-target-pvc # change to data target pvc
+            claimName: pvc-ea369219-77b2-4bc6-8381-fa4a28f147c0 # change to data target pvc
